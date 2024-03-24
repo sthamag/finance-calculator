@@ -12,23 +12,52 @@ print("bond       - to calculate the amount you'll have to pay on a home loan")
 menu = input("\nEnter either 'investment' or 'bond' form the menu above to proceed: ").lower()
 
 if menu == "investment":
-    deposit_amount = float(input("Enter the amount of money you'd like to deposit: "))
-    interest_rate = float(input("Enter the interest rate (as a percentage): "))
-    years = float(input("Enter the number of years you plan to invest: "))
-    interest_type = input("Enter either 'simple' or 'compound' interest: ").lower()
-    if interest_type == "simple":
-        simple_total = deposit_amount *(1 + (interest_rate/100)*years)
-        print(f"Your investment will yield a return of {simple_total} through simple interest.")
-    elif interest_type == "compound":
-        compound_total = deposit_amount * math.pow((1+interest_rate/100),years)
-        print(f"Your investment will yield a return of {compound_total} through compound interest.")
+    try:
+        deposit_amount = float(input("Enter the amount of money you'd like to deposit: "))
+        if deposit_amount <= 0:
+            raise ValueError("Deposit amount must be a positive number.")
+        
+        interest_rate = float(input("Enter the interest rate (as a percentage): "))
+        if interest_rate <= 0:
+            raise ValueError("Interest rate must be a positive number.")
+        
+        years = float(input("Enter the number of years you plan to invest: "))
+        if years <= 0:
+            raise ValueError("Number of years must be a positive number.")
+        
+        interest_type = input("Enter either 'simple' or 'compound' interest: ").lower()
+        if interest_type not in ["simple", "compound"]:
+            raise ValueError("Invalid interest type. Please enter either 'simple' or 'compound'.")
+
+        if interest_type == "simple":
+            simple_total = deposit_amount *(1 + (interest_rate/100)*years)
+            print(f"Your investment will yield a return of {round(simple_total, 2)} through simple interest.")
+        elif interest_type == "compound":
+            compound_total = deposit_amount * math.pow((1+interest_rate/100),years)
+            print(f"Your investment will yield a return of {round(compound_total, 2)} through compound interest.")
+    
+    except ValueError as e:
+        print("Invalid input:", e)
 
 elif menu == "bond":
-    present_value = float(input("Enter the present value of the house: "))
-    interest_rate2 = float(input("Enter the interest rate: "))
-    num_months = float(input("Enter the number of months you plan to take to repay the bond: "))
-    repayment = ((interest_rate2/100)/12 * present_value)/(1 - (1 + (interest_rate2/100)/12)**(-num_months))
-    print(f"The amount of money you'll have to repay each month is {repayment}")
+    try:
+        present_value = float(input("Enter the present value of the house: "))
+        if present_value <= 0:
+            raise ValueError("Present value must be a positive number.")
+        
+        interest_rate2 = float(input("Enter the interest rate: "))
+        if interest_rate2 <= 0:
+            raise ValueError("Interest rate must be a positive number.")
+        
+        num_months = float(input("Enter the number of months you plan to take to repay the bond: "))
+        if num_months <= 0:
+            raise ValueError("Number of months must be a positive number.")
+        
+        repayment = ((interest_rate2/100)/12 * present_value)/(1 - (1 + (interest_rate2/100)/12)**(-num_months))
+        print(f"The amount of money you'll have to repay each month is {round(repayment, 2)}")
+    
+    except ValueError as e:
+        print("Invalid input:", e)
 
 else:
-    print("Invalid input. Please try again.")
+    print("Invalid input. Please enter either 'investment' or 'bond'.")
