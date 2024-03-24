@@ -6,13 +6,17 @@
 
 import math
 
+# Display menu options
 print("investment - to calculate the amount of interest you'll earn on your investment")
 print("bond       - to calculate the amount you'll have to pay on a home loan")
 
+# Get user's choice from the menu
 menu = input("\nEnter either 'investment' or 'bond' form the menu above to proceed: ").lower()
 
+# Handle investment calculation
 if menu == "investment":
     try:
+        # Get inputs from the user
         deposit_amount = float(input("Enter the amount of money you'd like to deposit: "))
         if deposit_amount <= 0:
             raise ValueError("Deposit amount must be a positive number.")
@@ -29,6 +33,7 @@ if menu == "investment":
         if interest_type not in ["simple", "compound"]:
             raise ValueError("Invalid interest type. Please enter either 'simple' or 'compound'.")
 
+        # Calculate investment return based on the user's inputs
         if interest_type == "simple":
             simple_total = deposit_amount *(1 + (interest_rate/100)*years)
             print(f"Your investment will yield a return of {round(simple_total, 2)} through simple interest.")
@@ -37,10 +42,13 @@ if menu == "investment":
             print(f"Your investment will yield a return of {round(compound_total, 2)} through compound interest.")
     
     except ValueError as e:
+        # Handle invalid inputs
         print("Invalid input:", e)
 
+# Handle bond calculation
 elif menu == "bond":
     try:
+        # Get inputs from the user
         present_value = float(input("Enter the present value of the house: "))
         if present_value <= 0:
             raise ValueError("Present value must be a positive number.")
@@ -53,11 +61,14 @@ elif menu == "bond":
         if num_months <= 0:
             raise ValueError("Number of months must be a positive number.")
         
+        # Calculate bond repayments based on the user's inputs
         repayment = ((interest_rate2/100)/12 * present_value)/(1 - (1 + (interest_rate2/100)/12)**(-num_months))
         print(f"The amount of money you'll have to repay each month is {round(repayment, 2)}")
     
     except ValueError as e:
+        # Handle invalid inputs
         print("Invalid input:", e)
 
+# Handle invalid menu choice
 else:
     print("Invalid input. Please enter either 'investment' or 'bond'.")
